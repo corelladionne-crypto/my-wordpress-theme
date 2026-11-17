@@ -1,0 +1,26 @@
+name: Move posters
+on:
+  workflow_dispatch:
+    inputs:
+      end_c:
+        default: "2026-11-20 20:00"
+      end_d:
+        default: "2026-11-20 20:30"
+      dry_run:
+        default: "true"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python move_posters.py
+        env:
+          WC_KEY: ${{ secrets.WC_KEY }}
+          WC_SECRET: ${{ secrets.WC_SECRET }}
+          END_C: ${{ github.event.inputs.end_c }}
+          END_D: ${{ github.event.inputs.end_d }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
